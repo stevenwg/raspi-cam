@@ -51,7 +51,7 @@ while True:
     cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
     cv2.imshow('Image', I)
     time_now = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
-    cv2.imwrite('result/' + time_now + '.jpg', I)
+    # cv2.imwrite('result/' + time_now + '.jpg', I)
     if cv2.waitKey(1000) == 27:
         cv2.destroyAllWindows()
         ipcam.stop()
