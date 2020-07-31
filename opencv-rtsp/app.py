@@ -11,6 +11,12 @@ class ipcamCapture:
 		
 	# 攝影機連接。
         self.capture = cv2.VideoCapture(URL)
+        self.resolution = (
+            int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
+            int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+        self.fps = int(self.capture.get(cv2.CAP_PROP_FPS))
+        print('Resolution: ', self.resolution)
+        print('FPS: ', self.fps)
 
     def start(self):
 	# 把程式放進子執行緒，daemon=True 表示該執行緒會隨著主執行緒關閉而關閉。
@@ -43,16 +49,18 @@ ipcam.start()
 # 暫停1秒，確保影像已經填充
 time.sleep(1)
 
-# 使用無窮迴圈擷取影像，直到按下Esc鍵結束
+# # 使用無窮迴圈擷取影像，直到按下Esc鍵結束
 while True:
     # 使用 getframe 取得最新的影像
     I = ipcam.getframe()
+    if I == []:
+        continue
     
     cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
     cv2.imshow('Image', I)
     time_now = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
     # cv2.imwrite('result/' + time_now + '.jpg', I)
-    if cv2.waitKey(1000) == 27:
+    if cv2.waitKey(1) == 27:
         cv2.destroyAllWindows()
         ipcam.stop()
         break

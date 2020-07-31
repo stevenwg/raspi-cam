@@ -17,6 +17,11 @@ class ipcamCapture:
             int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
             int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
         self.fps = int(self.capture.get(cv2.CAP_PROP_FPS))
+        self.fourcc = int(self.capture.get(cv2.CAP_PROP_FOURCC))
+        print("resolution: ", self.resolution)
+        print("fps: ", self.fps)
+        # print("fourcc: ", chr(self.fourcc&0xFF) + chr(self.fourcc>>8&0xFF) + chr(self.fourcc>>16&0xFF) + chr(self.fourcc>>24&0xFF))
+        print("fourcc: ", self.fourcc)
 
     def start(self):
 	# 把程式放進子執行緒，daemon=True 表示該執行緒會隨著主執行緒關閉而關閉。
@@ -35,9 +40,13 @@ class ipcamCapture:
     def queryframe(self):
         while (not self.isstop):
             self.status, tempFrame = self.capture.read()
+            
+            self.fourcc = int(self.capture.get(cv2.CAP_PROP_FOURCC))
             print("resolution: ", self.resolution)
             print("fps: ", self.fps)
-            print("imencode!")
+            # print("fourcc: ", chr(self.fourcc&0xFF) + chr(self.fourcc>>8&0xFF) + chr(self.fourcc>>16&0xFF) + chr(self.fourcc>>24&0xFF))
+            print("fourcc: ", self.fourcc)
+            
             ret, self.Frame = cv2.imencode('.jpg', tempFrame)
             print(self.Frame)
 
@@ -59,8 +68,8 @@ while True:
     # 使用 getframe 取得最新的影像
     I = ipcam.getframe()
     
-    cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
-    cv2.imshow('Image', I)
+    # cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
+    # cv2.imshow('Image', I)
 #    time_now = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
 #    cv2.imwrite('result/' + time_now + '.jpg', I)
     if cv2.waitKey(1000) == 27:
