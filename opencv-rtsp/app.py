@@ -38,7 +38,8 @@ class ipcamCapture:
         
         self.capture.release()
 
-URL = "rtsp://admin:pass@192.168.0.200:554/stream0"
+# URL = "rtsp://admin:pass@192.168.0.200:554/stream0"
+URL = "rtsp://admin:pass@192.168.1.199:554/stream0"
 
 # 連接攝影機
 ipcam = ipcamCapture(URL)
