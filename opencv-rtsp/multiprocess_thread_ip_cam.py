@@ -60,11 +60,11 @@ def run():
     PWD = ['Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168']
     IP = ['192.168.1.211:554', '192.168.1.212:554', '192.168.1.214:554', '192.168.1.217:554', '192.168.1.218:554']
     INDEX = [211, 212, 214, 217, 218]
-    SAVEPATH = '/home/osense/Desktop/temp/'
+    SAVEPATH = ['/home/osense/Desktop/temp/211/', '/home/osense/Desktop/temp/212/', '/home/osense/Desktop/temp/214/', '/home/osense/Desktop/temp/217/', '/home/osense/Desktop/temp/218/']
 
     ipCams = []
     for idx in range(len(INDEX)):
-        ipCams.append(ipCamCapture(USER[idx], PWD[idx], IP[idx], INDEX[idx], SAVEPATH))
+        ipCams.append(ipCamCapture(USER[idx], PWD[idx], IP[idx], INDEX[idx], SAVEPATH[idx]))
     
     for ipCam in ipCams:
         ipCam.start()
@@ -79,7 +79,6 @@ def run():
         
         for ipCam in ipCams:
             ipCam.saveFrameThread()
-        time.sleep(0.18)
         
         if cv2.waitKey(1) == 27:
             cv2.destroyAllWindows()
@@ -87,6 +86,7 @@ def run():
                 ipCam.stop()
             break
         
+        time.sleep(0.2 - (timeit.default_timer()-start) - 0.003)
         print(len(IP), ' cameras exec time: ', (timeit.default_timer()-start))
     
 
