@@ -1,8 +1,10 @@
+import os
 import time
 from datetime import datetime
 import cv2
 import timeit
 import threading
+from util import bColors
 
 class ipCamCapture:
     def __init__(self, USER, PWD, IP, INDEX, SAVEPATH=[]):
@@ -51,7 +53,7 @@ class ipCamCapture:
         # time_now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")[:-1]
         time_now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")
         cv2.imwrite((self.savePath + time_now + '_cam' + str(self.INDEX) + '.jpg'), self.Frame)
-        print("ID: ", self.INDEX, ", ", time_now, ", save time: ", (timeit.default_timer()-start))
+        print("ID: ", self.INDEX, ", ", time_now, ", save time: ", bColors.OKGREEN, (timeit.default_timer()-start), bColors.ENDC)
 
 
 def run():
@@ -60,7 +62,23 @@ def run():
     PWD = ['Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168']
     IP = ['192.168.1.211:554', '192.168.1.212:554', '192.168.1.214:554', '192.168.1.217:554', '192.168.1.218:554']
     INDEX = [211, 212, 214, 217, 218]
-    SAVEPATH = ['/home/osense/Desktop/temp/211/', '/home/osense/Desktop/temp/212/', '/home/osense/Desktop/temp/214/', '/home/osense/Desktop/temp/217/', '/home/osense/Desktop/temp/218/']
+    # SAVEPATH = ['/home/osense/Desktop/temp/211/', '/home/osense/Desktop/temp/212/', '/home/osense/Desktop/temp/214/', '/home/osense/Desktop/temp/217/', '/home/osense/Desktop/temp/218/']
+    path = 'temp/'
+    SAVEPATH = []
+    for folder in INDEX:
+        SAVEPATH.append(path+str(folder)+'/')
+    
+    for folder in SAVEPATH:
+        if os.path.exists(path):
+            print(bColors.WARNING, 'Folder already exist', bColors.ENDC)
+            continue
+        if not(os.path.isdir(path)):
+            print(bColors.WARNING, 'WARNING: Not a folder', bColors.ENDC)
+        try:
+            os.makedirs(folder)
+            print('Create folder: ', folder)
+        except:
+            print(bColors.WARNING, 'WARNING: Can NOT create folder: ', folder, bColors.ENDC)
 
     ipCams = []
     for idx in range(len(INDEX)):
