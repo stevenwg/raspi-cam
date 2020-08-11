@@ -69,10 +69,10 @@ def run():
         SAVEPATH.append(path+str(folder)+'/')
     
     for folder in SAVEPATH:
-        if os.path.exists(path):
+        if os.path.exists(folder):
             print(bColors.WARNING, 'Folder already exist', bColors.ENDC)
             continue
-        if not(os.path.isdir(path)):
+        if not(os.path.isdir(folder)):
             print(bColors.WARNING, 'WARNING: Not a folder', bColors.ENDC)
         try:
             os.makedirs(folder)
@@ -104,7 +104,8 @@ def run():
                 ipCam.stop()
             break
         
-        time.sleep(0.2 - (timeit.default_timer()-start) - 0.003)
+        delayTime = 0.2 - (timeit.default_timer()-start) - 0.003 if (0.2 - (timeit.default_timer()-start) - 0.003) > 0 else 0
+        time.sleep(delayTime)
         print(len(IP), ' cameras exec time: ', (timeit.default_timer()-start))
     
 
