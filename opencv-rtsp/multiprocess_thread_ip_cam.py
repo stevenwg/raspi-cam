@@ -11,24 +11,25 @@ class ipCamCapture:
         self.isStop = False
         self.URL = "rtsp://%s:%s@%s/stream0" % (USER, PWD, IP)
         self.savePath = SAVEPATH
-		
+        self.IP = IP
+        self.INDEX = INDEX
 	# 攝影機連接。
         self.capture = cv2.VideoCapture(self.URL)
         self.resolution = (
             int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
             int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
         self.fps = int(self.capture.get(cv2.CAP_PROP_FPS))
-        print('IP: ', IP, ', Resolution: ', self.resolution, ', FPS: ', self.fps)
+        print('IP: ', self.IP, ', Resolution: ', self.resolution, ', FPS: ', self.fps)
 
     def start(self):
 	# 把程式放進子執行緒，daemon=True 表示該執行緒會隨著主執行緒關閉而關閉。
-        print('IP: ', IP, ' cam started!')
+        print('IP: ', self.IP, ' cam started!')
         threading.Thread(target=self.queryFrameThread, daemon=True, args=()).start()
 
     def stop(self):
 	# 記得要設計停止無限迴圈的開關。
         self.isStop = True
-        print('IP: ', IP, ' cam stopped!')
+        print('IP: ', self.IP, ' cam stopped!')
    
     def getFrame(self):
 	# 當有需要影像時，再回傳最新的影像。
@@ -44,18 +45,22 @@ class ipCamCapture:
         threading.Thread(target=self.saveFrame, daemon=True, args=()).start()
 
     def saveFrame(self):
-        time_now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")[:0]
-        cv2.imwrite((self.savePath + time_now + '_cam' + INDEX + '.jpg'), self.Frame)
-        print("ID: ", INDEX, ", ", time_now, ", save time: ", (timeit.default_timer()-start))
+        if self.Frame == []:
+            return
+        start = timeit.default_timer()
+        # time_now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")[:-1]
+        time_now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")
+        cv2.imwrite((self.savePath + time_now + '_cam' + str(self.INDEX) + '.jpg'), self.Frame)
+        print("ID: ", self.INDEX, ", ", time_now, ", save time: ", (timeit.default_timer()-start))
 
 
 def run():
     # URL1 = 'rtsp://admin:pass@192.168.1.211:554/stream0'
-    USER = ['admin', 'osense', 'osense', 'osense', 'osense']
-    PWD = ['pass', 'Osense168', 'Osense168', 'Osense168', 'Osense168']
+    USER = ['osense', 'osense', 'osense', 'osense', 'osense']
+    PWD = ['Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168']
     IP = ['192.168.1.211:554', '192.168.1.212:554', '192.168.1.214:554', '192.168.1.217:554', '192.168.1.218:554']
-    INDEX = [211, 212, 213, 214, 217, 218]
-    SAVEPATH = 'result_multiprocess_thread/'
+    INDEX = [211, 212, 214, 217, 218]
+    SAVEPATH = '/home/osense/Desktop/temp/'
 
     ipCams = []
     for idx in range(len(INDEX)):
@@ -64,17 +69,17 @@ def run():
     for ipCam in ipCams:
         ipCam.start()
 
-    for ipCam in ipCams:
-        cv2.namedWindow(IP[idx], cv2.WINDOW_NORMAL)
+    # for ipCam in ipCams:
+    #     cv2.namedWindow(IP[idx], cv2.WINDOW_NORMAL)
         
     while True:
         start = timeit.default_timer()
-        for ipCam in ipCams:
-            cv2.imshow(IP[idx], ipCam.getFrame())
+        # for ipCam in ipCams:
+        #     cv2.imshow(IP[idx], ipCam.getFrame())
         
         for ipCam in ipCams:
             ipCam.saveFrameThread()
-        time.sleep(0.15)
+        time.sleep(0.18)
         
         if cv2.waitKey(1) == 27:
             cv2.destroyAllWindows()
