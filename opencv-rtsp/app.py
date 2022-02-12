@@ -39,7 +39,8 @@ class ipcamCapture:
         self.capture.release()
 
 # URL = "rtsp://admin:pass@192.168.0.200:554/stream0"
-URL = "rtsp://admin:pass@192.168.1.211:554/stream0"
+# URL = "rtsp://admin:pass@192.168.1.211:554/stream0"
+URL = 'rtsp://osense:Osense168@192.168.1.214/stream0'
 
 # 連接攝影機
 ipcam = ipcamCapture(URL)
@@ -60,7 +61,7 @@ while True:
     cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
     cv2.imshow('Image', I)
     time_now = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
-    # cv2.imwrite('result/' + time_now + '.jpg', I)
+    cv2.imwrite('result/' + time_now + '.bmp', I)
     if cv2.waitKey(1) == 27:
         cv2.destroyAllWindows()
         ipcam.stop()

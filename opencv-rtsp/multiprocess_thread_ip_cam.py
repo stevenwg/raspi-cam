@@ -58,15 +58,22 @@ class ipCamCapture:
 
 def run():
     # URL1 = 'rtsp://admin:pass@192.168.1.211:554/stream0'
-    USER = ['osense', 'osense', 'osense', 'osense', 'osense']
-    PWD = ['Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168']
-    IP = ['192.168.1.211:554', '192.168.1.212:554', '192.168.1.214:554', '192.168.1.217:554', '192.168.1.218:554']
-    INDEX = [211, 212, 214, 217, 218]
-    # SAVEPATH = ['/home/osense/Desktop/temp/211/', '/home/osense/Desktop/temp/212/', '/home/osense/Desktop/temp/214/', '/home/osense/Desktop/temp/217/', '/home/osense/Desktop/temp/218/']
-    path = 'temp/'
-    SAVEPATH = []
-    for folder in INDEX:
-        SAVEPATH.append(path+str(folder)+'/')
+    
+    # USER = ['osense', 'osense', 'osense', 'osense', 'osense']
+    # PWD = ['Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168']
+    # IP = ['192.168.1.211:554', '192.168.1.212:554', '192.168.1.214:554', '192.168.1.217:554', '192.168.1.218:554']
+    # INDEX = [211, 212, 214, 217, 218]
+    # # SAVEPATH = ['/home/osense/Desktop/temp/211/', '/home/osense/Desktop/temp/212/', '/home/osense/Desktop/temp/214/', '/home/osense/Desktop/temp/217/', '/home/osense/Desktop/temp/218/']
+    # path = 'temp/'
+    # SAVEPATH = []
+    # for folder in INDEX:
+    #     SAVEPATH.append(path+str(folder)+'/')
+
+    USER = ['osense', 'osense', 'osense', 'osense', 'osense', 'osense', 'osense', 'osense', 'osense']
+    PWD = ['Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168', 'Osense168']
+    IP = ['192.168.1.211:554', '192.168.1.212:554', '192.168.1.213:554', '192.168.1.214:554', '192.168.1.215:554', '192.168.1.216:554', '192.168.1.217:554', '192.168.1.218:554', '192.168.1.219:554']
+    INDEX = [211, 212, 213, 214, 215, 216, 217, 218, 219]
+    SAVEPATH = ['temp/211/', 'temp/212/', 'temp/213/', 'temp/214/', 'temp/215/', 'temp/216/', 'temp/217/', 'temp/218/', 'temp/219/']
     
     for folder in SAVEPATH:
         if os.path.exists(folder):
